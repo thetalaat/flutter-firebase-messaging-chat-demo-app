@@ -34,7 +34,9 @@ class HomePage extends StatelessWidget {
 
         // loading
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('Loading...');
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
 
         // listview
