@@ -1,17 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_chat_app/auth/auth_service.dart';
 import 'package:minimal_chat_app/components/custom_textfield.dart';
 import 'package:minimal_chat_app/components/cutom_button.dart';
 import 'package:minimal_chat_app/pages/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   // textfields controllers
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  LoginPage({super.key});
+  final void Function() togglePages;
+
+  LoginPage({super.key, required this.togglePages});
 
   // login method
-  void login() {}
+  void login(BuildContext context) async {
+    // auth service
+    final authService = AuthService();
+
+    // try login
+    try {
+      await authService.signInWithEmailAndPassword(
+          _emailController.text, _passwordController.text);
+    }
+
+    // catch errors
+    catch (e) {
+      context.mounted
+          ? showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(e.toString()),
+                );
+              },
+            )
+          : null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +86,7 @@ class LoginPage extends StatelessWidget {
 
             // login button
             CustomButton(
-              onTap: login,
+              onTap: () => login(context),
               text: 'Login',
             ),
 
@@ -77,13 +103,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 InkWell(
                   borderRadius: BorderRadius.circular(4.0),
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) {
-                        return RegisterPage();
-                      },
-                    ));
-                  },
+                  onTap: togglePages,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Text(

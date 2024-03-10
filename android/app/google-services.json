@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148388315617",
+    "project_id": "thetalaat-demo-apps",
+    "storage_bucket": "thetalaat-demo-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148388315617:android:68f2b565b2aabde14f52a0",
+        "android_client_info": {
+          "package_name": "com.example.minimal_chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKp_GEGTP7CFoid_5KdfAP5w24xUuNu0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

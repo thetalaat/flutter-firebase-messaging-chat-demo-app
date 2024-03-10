@@ -1,18 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_chat_app/auth/auth_service.dart';
 import 'package:minimal_chat_app/components/custom_textfield.dart';
 import 'package:minimal_chat_app/components/cutom_button.dart';
 import 'package:minimal_chat_app/pages/login_page.dart';
 
 class RegisterPage extends StatelessWidget {
   // textfields controllers
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
 
-  RegisterPage({super.key});
+  final void Function() togglePages;
+
+  RegisterPage({super.key, required this.togglePages});
 
   // register method
-  void register() {}
+  void register(BuildContext context) async {
+    // auth service
+    final authService = AuthService();
+
+    // passwords match -> create user
+    if (_passwordController.text == _passwordConfirmController.text) {
+      // try register
+      try {
+        await authService.signUpWithEmailAndPassword(
+            _emailController.text, _passwordController.text);
+      }
+
+      // catch errors
+      catch (e) {
+        context.mounted
+            ? showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(e.toString()),
+                  );
+                },
+              )
+            : null;
+      }
+    }
+
+    // passwords Dont match -> show error
+    else {
+      context.mounted
+          ? showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Passwords don't match!"),
+                );
+              },
+            )
+          : null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +113,7 @@ class RegisterPage extends StatelessWidget {
 
             // login button
             CustomButton(
-              onTap: register,
+              onTap: () => register(context),
               text: 'Register',
             ),
 
@@ -86,13 +130,7 @@ class RegisterPage extends StatelessWidget {
                 ),
                 InkWell(
                   borderRadius: BorderRadius.circular(4.0),
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) {
-                        return LoginPage();
-                      },
-                    ));
-                  },
+                  onTap: togglePages,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Text(
