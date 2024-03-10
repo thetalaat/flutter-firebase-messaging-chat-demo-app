@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 ThemeData lightMode = ThemeData(
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey.shade600,
-      foregroundColor: Colors.grey.shade200,
+      centerTitle: true,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      backgroundColor: Colors.transparent,
+      foregroundColor: Colors.grey.shade600,
     ),
     colorScheme: ColorScheme.light(
       background: Colors.grey.shade200,
